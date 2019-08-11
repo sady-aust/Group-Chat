@@ -15,9 +15,11 @@ public class Server {
                 Socket welcomeSocket = serverSocket.accept();
                 DataInputStream myDataInputStream = new DataInputStream(welcomeSocket.getInputStream());
                 DataOutputStream myDataOutputStream = new DataOutputStream(welcomeSocket.getOutputStream());
-                myDataOutputStream.writeBytes(ChatUtils.ENTERYOURNAMEMESSAGE+"\n");
+                myDataOutputStream.writeBytes(ChatUtils.ENTER_YOUR_NAME_MESSAGE +"\n");
                 ClientHandler aClientHandler = new ClientHandler(welcomeSocket,myDataInputStream,myDataOutputStream,null,null);
                 ChatUtils.CLIENTS.add(aClientHandler);
+                System.out.println("A new client has joined.");
+                System.out.println("Latest Count "+ChatUtils.CLIENTS.size());
 
                 aClientHandler.setClientId(Integer.toString(ChatUtils.CLIENTS.size()));
 

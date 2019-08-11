@@ -1,9 +1,6 @@
 package server;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
@@ -13,7 +10,7 @@ public class ClientHandler implements Runnable {
     private String clientName;
     private String clientId;
 
-    public ClientHandler(Socket clientSocket,DataInputStream aDataInputStream, DataOutputStream aDataOutputStream, String clientName, String clientId) {
+    public ClientHandler(Socket clientSocket, DataInputStream aDataInputStream, DataOutputStream aDataOutputStream, String clientName, String clientId) {
         this.clientSocket = clientSocket;
         this.aDataInputStream = aDataInputStream;
         this.aDataOutputStream = aDataOutputStream;
@@ -63,40 +60,45 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Client Handler Thread Started for client "+clientId);
         BufferedReader inputReader = new BufferedReader(new InputStreamReader(aDataInputStream));
 
         try {
             String name = inputReader.readLine();
             this.setClientName(name);
             try {
-                ChatUtils.BROADCASTMESSAGE(name+" has joind to the group chat message");
-            }catch (Exception e){
-                System.out.println("Can't Broad cast Message");
+                String joinMessage = "Server Message: " + name + " has joined to the group chat message";
+                ChatUtils.BROADCAST_MESSAGE_WITHOUT_CURRENT_CLIENT(this.clientId, joinMessage);
+
+                String welcomeMessage = "Hey! " + this.clientName + " " + ChatUtils.WELCOME_MESSAGE;
+                ChatUtils.SEND_MESSAGE_TO_SPECIFIC_CLIENT(this.clientId, welcomeMessage);
+
+            } catch (Exception e) {
+                System.out.println("Can't Broadcast Message");
                 e.printStackTrace();
-            }finally {
-                System.out.println(this.clientName+" LEFT THE GROUP CHAT");
-                this.clientSocket.close();
             }
 
-            while (true){
+            while (true) {
+                String message = inputReader.readLine();
+                ChatUtils.BROADCAST_MESSAGE(this.clientName + ":" + message);
 
+            }
+        } catch (Exception e) {
+            if (ChatUtils.REMOVE_ONE_CHAT_HANDLER(this.clientId)) {
+                System.out.println("One client left!");
+                System.out.println("Latest Count " + ChatUtils.CLIENTS.size());
                 try {
-                    String message = inputReader.readLine();
-                    ChatUtils.BROADCASTMESSAGE(this.clientName+": " +message);
-                }catch (Exception e){
-                    System.out.println("Can't Broad cast Message");
-
-                    e.printStackTrace();
-                    break;
-                }finally {
-                    System.out.println(this.clientName+" LEFT THE GROUP CHAT");
-                    this.clientSocket.close();
-
+                    ChatUtils.BROADCAST_MESSAGE("Server Message: " + this.clientName + " has left the group chat");
+                } catch (Exception ex) {
+                    System.out.println("Can't broadcast message");
                 }
             }
-        }catch (Exception e){
-            e.printStackTrace();
+
+        } finally {
+            try {
+                this.clientSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
     }
