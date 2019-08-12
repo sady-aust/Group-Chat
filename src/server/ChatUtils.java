@@ -26,7 +26,8 @@ public class ChatUtils {
 
     static void BROADCAST_MESSAGE_WITHOUT_CURRENT_CLIENT(String currentClientId, String message) throws IOException {
         for (ClientHandler clientHandler : CLIENTS) {
-            if (!clientHandler.getClientId().equals(currentClientId)) {
+            System.out.println(clientHandler.getClientName());
+            if (!clientHandler.getClientId().equals(currentClientId) && clientHandler.getClientName() != null ) {
                 clientHandler.getaDataOutputStream().writeBytes(message + "\n");
             }
 

@@ -64,9 +64,9 @@ public class ClientHandler implements Runnable {
 
         try {
             String name = inputReader.readLine();
-            this.setClientName(name);
+            this.clientName = name;
             try {
-                String joinMessage = "Server Message: " + name + " has joined to the group chat message";
+                String joinMessage = "Server Message: " + this.clientName + " has joined to the group chat message";
                 ChatUtils.BROADCAST_MESSAGE_WITHOUT_CURRENT_CLIENT(this.clientId, joinMessage);
 
                 String welcomeMessage = "Hey! " + this.clientName + " " + ChatUtils.WELCOME_MESSAGE;
