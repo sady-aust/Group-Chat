@@ -37,7 +37,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Client1">
+  <component name="RunManager" selected="Application.Server">
     <configuration name="Client1" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="client.Client1" />
       <module name="GroupChat" />
@@ -98,8 +98,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Client1" />
         <item itemvalue="Application.Server" />
+        <item itemvalue="Application.Client1" />
         <item itemvalue="Application.Client2" />
         <item itemvalue="Application.Client3" />
       </list>
@@ -115,7 +115,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1565465748086</updated>
-      <workItem from="1565465751975" duration="14272000" />
+      <workItem from="1565465751975" duration="15462000" />
+      <workItem from="1566402020040" duration="3435000" />
     </task>
     <servers />
   </component>
@@ -127,7 +128,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
